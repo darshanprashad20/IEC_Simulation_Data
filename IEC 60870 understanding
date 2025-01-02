@@ -1,7 +1,56 @@
-Standard IEC 60870-5-104 ASDU - Typeids
+**INTRODUCTION
+IEC 104, also known as IEC 60870-5-104, is a communication protocol used in telecontrol, teleprotection, and other telecommunication functions within electrical power systems.
+It is designed to facilitate the exchange of information between control centers and substation equipment over wide area networks using standard transport profiles.
+
+Frame Structure: The protocol uses a variable-length frame structure, allowing it to handle a variety of data types and sizes.
+This flexibility is beneficial for modern industrial applications that require complex data handling.
+
+**Frame Structure
+
+    1. Start Byte (0x68): The frame always begins with the start byte 0x68 to indicate the beginning of a frame.
+    2. Length Field: The second byte specifies the length of the APDU (Application Protocol Data Unit), excluding the start byte and the length field itself.
+    3. Control Field: This field contains control information used for communication management. It can include sequence numbers for sent and received frames, commands, and acknowledgments.
+    4. ASDU (Application Service Data Unit): The ASDU contains the actual data being transmitted. It includes several sub-fields:
+        ◦ Type Identifier: Specifies the type of information (e.g., single-point information, double-point information).
+        ◦ Variable Structure Qualifier: Indicates the number of information objects and the presence of optional fields.
+        ◦ Cause of Transmission: Specifies why the data is being transmitted (e.g., spontaneous, cyclic, request).
+        ◦ Common Address of ASDU: Identifies the address of the device sending or receiving the data.
+        ◦ Information Object Address: Specifies the address of the data within the device.
+        ◦ Information Elements: Contains the actual data values (e.g., status, measurements).
+    5. Checksum: Ensures data integrity by verifying that the frame has not been altered during transmission.
+    6. End Byte (0x16): The frame ends with the byte 0x16, signaling the end of the frame.
 
 
+**Example
 
+Let's consider a simple example where the control center requests the status of a single point from a remote device.
+Frame Breakdown:
+    • Start Byte: 0x68
+    • Length Field: 0x0E (14 bytes long, excluding the start byte and length field)
+    • Control Field: Contains control information for managing the communication.
+    • ASDU:
+        ◦ Type Identifier: 0x01 (indicating single-point information)
+        ◦ Variable Structure Qualifier: 0x01 (one information object)
+        ◦ Cause of Transmission: 0x03 (request)
+        ◦ Common Address of ASDU: 0x01 (address of the remote device)
+        ◦ Information Object Address: 0x0100 (address of the specific data point)
+        ◦ Information Elements: 0x01 (status of the single point: ON)
+    • Checksum: Calculated value to verify data integrity
+    • End Byte: 0x16
+
+**Full Frame in Hexadecimal**
+68 0E 00 00 01 03 01 00 01 00 01 00 00 16
+
+	68: Start Byte
+    • 0E: Length Field (14 bytes)
+    • 00 00: Control Field (example values)
+    • 01: Type Identifier (single-point information)
+    • 03: Cause of Transmission (request)
+    • 01: Common Address of ASDU (device address)
+    • 00 01 00: Information Object Address (data point address)
+    • 01: Information Elements (status: ON)
+    • 00 00: Checksum (example values)
+    • 16: End Byte
 
 **Application Examples
 
@@ -19,6 +68,7 @@ Standard IEC 60870-5-104 ASDU - Typeids
 
     Protection relays
 
+**Standard IEC 60870-5-104 ASDU - Typeids
 **Type Dec Description
 
 M_SP_NA_1 1 Single-point information
