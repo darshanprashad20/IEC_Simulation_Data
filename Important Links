@@ -1,3 +1,8 @@
 
 Standard IEC 60870-5-104 ASDU - Typeids
 https://github.com/FreyrSCADA/IEC-60870-5-104/blob/master/IEC%20104%20Client%20Simulator/README.md
+
+
+library for python for IEC 104 communication:
+  c104 python module
+https://iec104-python.readthedocs.io/latest/python/index.html
