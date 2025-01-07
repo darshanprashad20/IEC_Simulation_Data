@@ -150,5 +150,70 @@ ASDU_TYPE_127..255 127..255 Reserved (user area)
 1. IEC870 COT Cause
 Purpose: Indicates the Cause of Transmission (COT), such as periodic updates, spontaneous reports, or interrogations. INTROGEN = 20 represents a general interrogation response.
 
+Common Uses of COT
+The values in the dropdown (e.g., INTROGEN = 20, INRO1 = 21, etc.) represent predefined causes of transmission defined in the IEC 60870-5-104 standard. Here's a brief explanation of the most commonly used COT values:
+
+INTROGEN (20): Interrogation General
+
+This is used when the master station (SCADA) performs a general interrogation request. The RTU responds with all current data points (e.g., device statuses, measurements, etc.).
+It is the most common COT used when the SCADA master requests data from the RTU.
+INRO1 (21) to INRO16 (36): Interrogation Groups
+
+These are used for grouped interrogation. Instead of interrogating all data points (as with INTROGEN), the SCADA master can interrogate specific groups of data points.
+Useful in systems where data points are logically grouped, e.g., by device or function.
+REQCOGEN (37): Request for General Command
+
+Indicates that a general command is being sent to the RTU, such as a reset or initialization command.
+REQCO1 (38) to REQCO4 (41): Request for Specific Commands
+
+Represents specific requests for operations (e.g., switching on/off, parameter adjustments) that are categorized into command groups.
+How COT Works in the System
+
+For Event-Based Transmission:
+When a parameter changes or an alarm is triggered, the RTU sends the data to the SCADA master with an appropriate COT. For example:
+A breaker status changes: COT = Spontaneous (SPONT).
+Periodic update: COT = Cyclic Transmission (PERIODIC).
+
+For Interrogation:
+When the SCADA master requests data:
+The request includes a specific COT (e.g., INTROGEN for general interrogation).
+The RTU responds with the requested data, tagging it with the same COT to indicate the response.
+
+
 2. SBO Timeout
 Purpose: Sets the Select Before Operate (SBO) timeout value in seconds. This is relevant for certain control models where an action needs to be confirmed within a timeout period. A value of 0 means SBO is not used.
+
+
+**Control Command Types in IEC 104:
+Single Command (C_SC_NA_1): Used to control single-bit points, such as turning something on or off.
+Double Command (C_DC_NA_1): Used for points requiring double-bit states, like forward/reverse or open/close.
+Step Position Command (C_SE_NA_1): Used for stepwise control of devices with position adjustments.
+Set-Point Command (C_SE_NB_1 or C_SE_NC_1): Used to send analog values to the server, either as normalized, scaled, or floating-point values.
+
+Types for Setting or Changing Data:
+C_SC_NA_1: Single command (e.g., turning on or off a device).
+C_DC_NA_1: Double command (e.g., for devices with more than one state, like a three-position switch).
+C_RC_NA_1: Regulating step command (e.g., adjusting the position of a regulator).
+C_SE_NA_1: Set point command (normalized value).
+C_SE_NB_1: Set point command (scaled value).
+C_SE_NC_1: Set point command (floating point value).
+C_BO_NA_1: Bitstring of 32 bits, used to send multiple bits of information in one command.
+Explanation:
+C_SC_NA_1 (Single Command): Used to issue a single control command like turning something on or off.
+C_DC_NA_1 (Double Command): Used when you have more than one state to control, like "On," "Off," and "Intermediate."
+C_SE_NA_1, C_SE_NB_1, C_SE_NC_1: Used to set a specific value (like a temperature or voltage setpoint).
+C_SE_NA_1: Normalized setpoint.
+C_SE_NB_1: Scaled setpoint.
+C_SE_NC_1: Floating-point setpoint.
+C_BO_NA_1 (Bitstring): Allows sending a 32-bit value, which can represent multiple binary states or control multiple points.
+For Writing Floating-Point Values:
+C_SE_NC_1 is the appropriate type for writing floating-point values.
+
+
+C_SC_NA_1	Single command (On/Off)	Turn on a light
+C_DC_NA_1	Double command (Three-state device)	Set fan to low
+C_RC_NA_1	Regulating step command (Incremental)	Increase voltage by one step
+C_SE_NA_1	Set point (Normalized value)	Set temperature to 50% of range
+C_SE_NB_1	Set point (Scaled value)	Set motor speed to 600 RPM
+C_SE_NC_1	Set point (Floating point)	Set voltage to 121.5 V
+C_BO_NA_1	Bitstring (32 bits)	Set control bits
