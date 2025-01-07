@@ -145,3 +145,10 @@ F_FA_NA_1 124 ACK file, ACK section
 F_SG_NA_1 125 Segment
 F_DR_TA_1 126 Directory
 ASDU_TYPE_127..255 127..255 Reserved (user area)
+
+
+1. IEC870 COT Cause
+Purpose: Indicates the Cause of Transmission (COT), such as periodic updates, spontaneous reports, or interrogations. INTROGEN = 20 represents a general interrogation response.
+
+2. SBO Timeout
+Purpose: Sets the Select Before Operate (SBO) timeout value in seconds. This is relevant for certain control models where an action needs to be confirmed within a timeout period. A value of 0 means SBO is not used.
