@@ -217,3 +217,54 @@ C_SE_NA_1	Set point (Normalized value)	Set temperature to 50% of range
 C_SE_NB_1	Set point (Scaled value)	Set motor speed to 600 RPM
 C_SE_NC_1	Set point (Floating point)	Set voltage to 121.5 V
 C_BO_NA_1	Bitstring (32 bits)	Set control bits
+
+
+
+**************ASDU and IOA******************************
+In IEC 104 protocol, ASDU (Application Service Data Unit) and IOA (Information Object Address) are crucial elements that help identify and organize data communication between devices. Let's break down their roles and how to configure them correctly.
+1. ASDU (Application Service Data Unit)
+
+The ASDU identifies a specific logical device or group of data points. It includes information such as:
+
+    Type identification (data type, e.g., M_ME_NB_1 for scaled analog values)
+    Cause of transmission (e.g., spontaneous, periodic, or interrogation)
+    ASDU address (identifies a source or destination of the data)
+
+Role
+
+    ASDU Address: Functions like a "device ID" for logical separation.
+    Each physical or logical device in your system typically has a unique ASDU address.
+    Same Device: All fields (voltage, current, and frequency) would share the same ASDU if they come from the same transformer.
+    Different Devices: Different ASDU addresses are used for separate devices (e.g., transformer A might have ASDU 1, transformer B might have ASDU 2).
+
+2. IOA (Information Object Address)
+
+The IOA uniquely identifies a specific data point within the ASDU. It acts as an address for variables or parameters.
+Role
+
+    The IOA differentiates between data points for voltage, current, and frequency within the same ASDU.
+    For example:
+        Voltage → IOA 1001
+        Current → IOA 1002
+        Frequency → IOA 1003
+
+These are just examples; the actual IOA values are assigned based on your system design.
+Configuration Guidelines
+
+If you are simulating the status of a single transformer:
+
+    Assign a single ASDU address (e.g., 1) for the transformer.
+    Assign unique IOAs for each parameter:
+        Voltage: IOA 1001
+        Current: IOA 1002
+        Frequency: IOA 1003
+
+If you are simulating multiple transformers:
+
+    Assign unique ASDU addresses (e.g., 1 for Transformer A, 2 for Transformer B).
+    Keep the same pattern for IOAs (e.g., 1001 for voltage, 1002 for current, etc.).
+
+
+
+
+
